@@ -5,10 +5,15 @@ const PROFILE_BASE_URL = "http://image.tmdb.org/t/p/w185";
 const BACKDROP_BASE_URL = "http://image.tmdb.org/t/p/w780";
 const CONTAINER = document.querySelector(".container");
 
+
+
+
+
 // Don't touch this function please
 const autorun = async () => {
   const movies = await fetchMovies();
   renderMovies(movies.results);
+  navBar(movies)
 };
 
 // Don't touch this function please
@@ -42,6 +47,7 @@ const fetchMovie = async (movieId) => {
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovies = (movies) => {
   movies.map((movie) => {
+
     const movieDiv = document.createElement("div");
     movieDiv.innerHTML = `
         <img src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${movie.title
@@ -76,4 +82,153 @@ const renderMovie = (movie) => {
     </div>`;
 };
 
+
+
+const genresArraylist = [
+  {
+    "id": 28,
+    "name": "Action"
+  },
+  {
+    "id": 12,
+    "name": "Adventure"
+  },
+  {
+    "id": 16,
+    "name": "Animation"
+  },
+  {
+    "id": 35,
+    "name": "Comedy"
+  },
+  {
+    "id": 80,
+    "name": "Crime"
+  },
+  {
+    "id": 99,
+    "name": "Documentary"
+  },
+  {
+    "id": 18,
+    "name": "Drama"
+  },
+  {
+    "id": 10751,
+    "name": "Family"
+  },
+  {
+    "id": 14,
+    "name": "Fantasy"
+  },
+  {
+    "id": 36,
+    "name": "History"
+  },
+  {
+    "id": 27,
+    "name": "Horror"
+  },
+  {
+    "id": 10402,
+    "name": "Music"
+  },
+  {
+    "id": 9648,
+    "name": "Mystery"
+  },
+  {
+    "id": 10749,
+    "name": "Romance"
+  },
+  {
+    "id": 878,
+    "name": "Science Fiction"
+  },
+  {
+    "id": 10770,
+    "name": "TV Movie"
+  },
+  {
+    "id": 53,
+    "name": "Thriller"
+  },
+  {
+    "id": 10752,
+    "name": "War"
+  },
+  {
+    "id": 37,
+    "name": "Western"
+  }
+]
+
+
+
+//Hasan: code for the nav bar 
+
+const navBar = (movies) => {
+
+  // ** Genre Section 
+  //Hasan: seperating movies by genre 
+  const genresMovieslist = [];
+  for (let genre of genresArraylist) {
+
+    const moviesPerGenre = movies.results.filter((movie) => {
+      for (let obj of movie.genre_ids) {
+        if (obj === genre.id) {
+          return movie
+        }
+      }
+    })
+    genresMovieslist.push({ name: genre.name, movies: moviesPerGenre });
+  }
+
+
+  //Hasan: adding all genres as dropdown menu item if no movies match no drop-menu-item shows
+  const dropMenuGenres = document.getElementById("dropdown-menu genres")
+  for (let genre of genresMovieslist) {
+    if (genre.movies.length > 0) {
+      dropMenuGenres.innerHTML += `<li><a class="dropdown-item genres" href="#">${genre.name}</a></li>`
+    }
+  }
+
+  //Hasan: adding event listners to all dropdown menu and render the movies by clicked genre
+  const dropItems = document.getElementsByClassName("dropdown-item genres");
+  for (let i = 0; i < dropItems.length; i++) {
+
+    dropItems[i].addEventListener('click', () => {
+      document.getElementById("container").innerHTML = "";
+      const clickedGenreMovies = genresMovieslist.filter(obj => obj.name === dropItems[i].textContent)
+      renderMovies(clickedGenreMovies[0].movies);
+
+    });
+  }
+
+
+  // Filter Section 
+
+  console.log(movies.results)
+
+  // const dropMenuGenres = document.getElementById("dropdown-menu filter")
+  // for (let genre of genresMovieslist) {
+  //   if (genre.movies.length > 0) {
+  //     dropMenuGenres.innerHTML += `<li><a class="dropdown-item genres" href="#">${genre.name}</a></li>`
+  //   }
+  // }
+
+
+
+
+
+}
+
+
+
+
 document.addEventListener("DOMContentLoaded", autorun);
+
+
+
+
+

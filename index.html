@@ -4,20 +4,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kQtW33rZJAHjgefvhyyzcGF3C5TFyBQBA13V1RKPf4uH+bwyzQxZ6CmMZHmNBEfJ"
+        crossorigin="anonymous"></script>
     <link rel="stylesheet" href="style.css">
+
     <title>Movie</title>
 </head>
 
 <body>
-    <div class="container">
-        <h1 class="text-3xl font-bold underline text-clifford mb-4 text-center">
-            Hello world!
-        </h1>
+    <div class="row mb-3 d-flex justify-content-center ">
+        <div class="col-xxl-10 col-xl-12 col-lg-12  col-md-10   mb-3 ">
+            <nav class=" flexnav navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <a class="navbar-brand fs-3" href="#">Navbar</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse d-xxl-flex" id="navbarSupportedContent">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item">
+                                <a class="nav-link  " aria-current="page" href=".">Movies</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link  " href="#">Tv Shows</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link  " href="#">Actors</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle " href="#" id="navbarDropdown" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Genres
+                                </a>
+                                <ul class="dropdown-menu text-center" id="dropdown-menu genres"
+                                    aria-labelledby="navbarDropdown">
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown" id="filter">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Filter
+                                </a>
+                                <ul class="dropdown-menu text-center" id="dropdown-menu filter"
+                                    aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item " href="#">Top</a></li>
+                                    <li><a class="dropdown-item " href="#">Oldest</a></li>
+                                    <li><a class="dropdown-item " href="#">Newest</a></li>
+
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link fs-3" href="#" tabindex="-1" aria-disabled="true"></a>
+                            </li>
+                        </ul>
+                        <form class="d-flex flex-row-reverse">
+                            <input class="form-control me-2 " type="search" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-success" type="submit">Search</button>
+                        </form>
+                    </div>
+                </div>
+            </nav>
+
+
+
+
+        </div>
     </div>
+    <div class="container" id="container">
+    </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
     <script type="text/javascript" src="script.js"></script>
+
 </body>
 
 </html>
