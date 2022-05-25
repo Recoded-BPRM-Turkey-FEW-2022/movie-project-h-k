@@ -43,6 +43,7 @@ const fetchMovie = async (movieId) => {
   return res.json();
 };
 
+
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovies = (movies) => {
   movies.map((movie) => {
