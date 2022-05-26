@@ -119,9 +119,8 @@ const renderActorsForSingleMovie = async (actors) => {
     const actor = actors.cast[i].name;
     actorDiv.innerHTML = `
     <h5>${actor}</h5> 
-    <img src="${
-      PROFILE_BASE_URL + actors.cast[i].profile_path
-    }" alt="${actor} poster">`;
+    <img src="${PROFILE_BASE_URL + actors.cast[i].profile_path
+      }" alt="${actor} poster">`;
     actorDiv.addEventListener("click", () => {
       actorDetails(actors.cast[i].id);
     });
@@ -158,9 +157,8 @@ const renderRelatedMovies = async (relatedMovies) => {
     const relatedMovie = relatedMovies[i].title;
     relatedMovieDiv.innerHTML = `
     <h5>${relatedMovie}</h5> 
-    <img src="${
-      BACKDROP_BASE_URL + relatedMovies[i].poster_path
-    }" alt="${relatedMovie} poster">`;
+    <img src="${BACKDROP_BASE_URL + relatedMovies[i].poster_path
+      }" alt="${relatedMovie} poster">`;
     relatedMoviesDiv.appendChild(relatedMovieDiv);
   }
 };
@@ -195,9 +193,8 @@ const renderMovie = (movie) => {
             <li>${genres.join("")}</li>
           </ul>
 
-          <p id="movie-release-date"><b>Release Date:</b> ${
-            movie.release_date
-          }</p>
+          <p id="movie-release-date"><b>Release Date:</b> ${movie.release_date
+    }</p>
           <p id="movie-runtime"><b>Runtime:</b> ${movie.runtime} Minutes</p>
           <h3>Overview:</h3>
           <p id="movie-overview">${movie.overview}</p>
@@ -264,7 +261,7 @@ const renderActor = (actor) => {
         <p id="popularity">${actorPopularity}</p>
         <h4>Birthday:</h4>
         <p id="birthday">${actorBirthday}</p>
-        ${actor.deathday !== "null" ? '' : actorDeathday }
+        ${actor.deathday !== "null" ? '' : actorDeathday}
         <h4>Biography:</h4>
         <p id="biography" style="color:#BDBDBD; font-size: .8rem;">${actorBiography}</p>
       </div>
@@ -399,25 +396,82 @@ const navBar = (movies) => {
   }
 
 
+
+
   // Filter Section 
 
-  console.log(movies.results)
 
-  // const dropMenuGenres = document.getElementById("dropdown-menu filter")
-  // for (let genre of genresMovieslist) {
-  //   if (genre.movies.length > 0) {
-  //     dropMenuGenres.innerHTML += `<li><a class="dropdown-item genres" href="#">${genre.name}</a></li>`
-  //   }
-  // }
+  function calculateAverage(array) {
+    var total = 0;
+    var count = 0;
+
+    array.forEach(function (item, index) {
+      total += item;
+      count++;
+    });
+
+    return total / count;
+  }
+
+  const popular = document.getElementById("Popular")
+  const releaseDate = document.getElementById("Release Date")
+  const topRated = document.getElementById("Top Rated")
+  const nowPlaying = document.getElementById("now playing")
+  const upComing = document.getElementById("Up Coming")
+
+  const filterList = [popular, releaseDate, topRated, nowPlaying, upComing]
 
 
+  console.log(movies.results);
 
+  for (let i = 0; i < filterList.length; i++) {
 
+    filterList[i].addEventListener('click', () => {
+
+      if (filterList[i].textContent === "Popular") {
+        const popularityIndexArray = [];
+        for (let i of movies.results) {
+          popularityIndexArray.push(i.popularity)
+        }
+        const averagePopularity = calculateAverage(popularityIndexArray);
+        const popularMovies = movies.results.filter(movie => movie.popularity >= averagePopularity)
+        document.getElementById("container").innerHTML = "";
+        renderMovies(popularMovies)
+      }
+
+      else if (filterList[i].textContent === "Release Date") {
+        console.log("hello")
+        const releaseDateArray = [...movies.results]
+        releaseDateArray.sort((a, b) => (a.release_date < b.release_date) ? 1 : ((b.release_date < a.release_date) ? -1 : 0))
+        document.getElementById("container").innerHTML = "";
+        renderMovies(releaseDateArray);
+      }
+      else if (filterList[i].textContent === "Top Rated") {
+        const votingIndex = [];
+        for (let i of movies.results) {
+          votingIndex.push(i.vote_average)
+        }
+        const averageVoting = calculateAverage(votingIndex);
+        const highVotedMovies = movies.results.filter(movie => movie.vote_average >= averageVoting)
+        document.getElementById("container").innerHTML = "";
+        renderMovies(highVotedMovies)
+      }
+      else if (filterList[i].textContent === "now playing") {
+
+        let today = new Date();
+        let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        console.log(typeof date)
+        const nowPlayingMovies = movies.results.filter(movie => movie.release_date <= date)
+        console.log(nowPlayingMovies)
+      }
+      else if (filterList[i].textContent === "up coming") {
+
+      }
+
+    });
+  }
 
 }
-
-
-
 
 document.addEventListener("DOMContentLoaded", autorun);
 
