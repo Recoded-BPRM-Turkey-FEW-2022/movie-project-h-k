@@ -12,8 +12,9 @@ const CONTAINER = document.querySelector(".container");
 // Don't touch this function please
 const autorun = async () => {
   const movies = await fetchMovies();
+  const upComingMovies = await fetchUpcomingMovies();
   renderMovies(movies.results);
-  navBar(movies)
+  navBar(movies, upComingMovies)
 };
 
 // Don't touch this function please
@@ -60,6 +61,15 @@ const fetchMovie = async (movieId) => {
   //  console.log(res.json())
   return res.json();
 };
+
+
+async function fetchUpcomingMovies() {
+  const url = constructUrl(`movie/upcoming`);
+  const res = await fetch(url);
+  return res.json();
+
+}
+
 
 // Newly added: This function to fetch actors in one movie
 const fetchMovieActors = async (movieId) => {
@@ -357,7 +367,7 @@ const genresArraylist = [
 
 //Hasan: code for the nav bar 
 
-const navBar = (movies) => {
+const navBar = (movies, upComingMovies) => {
 
   // ** Genre Section 
   //Hasan: seperating movies by genre 
@@ -413,6 +423,8 @@ const navBar = (movies) => {
     return total / count;
   }
 
+
+
   const popular = document.getElementById("Popular")
   const releaseDate = document.getElementById("Release Date")
   const topRated = document.getElementById("Top Rated")
@@ -464,12 +476,52 @@ const navBar = (movies) => {
         const nowPlayingMovies = movies.results.filter(movie => movie.release_date <= date)
         console.log(nowPlayingMovies)
       }
-      else if (filterList[i].textContent === "up coming") {
-
+      else if (filterList[i].textContent === "Up Coming") {
+        document.getElementById("container").innerHTML = "";
+        renderMovies(upComingMovies.results)
       }
 
     });
   }
+
+
+  // About Us section 
+  const aboutUs = document.getElementById("about us")
+  // console.log(aboutUs)
+  aboutUs.addEventListener("click", () => {
+
+    document.getElementById("container").innerHTML = "";
+    CONTAINER.innerHTML =
+      `
+    <div class="row d-flex flex-column align-items-center justify-content-center">
+    <div class="col-12">
+        <img src="https://i.ytimg.com/vi/iAYmjA9LHIc/maxresdefault.jpg" alt="">
+    </div>
+    <div class="col-5 text-center mt-5">
+        We are Pirate Developers. Looking for expanding towards Higher Amplitude and Dimnsion
+        We present our Fine Creations with Humble and Attitude to surpass the living Creatures beyond its
+        limits
+        Share and Give us your never ending Love by following us on platforms:
+    </div>
+    <div class="col">
+        <div class="text-center my-4">
+            <a href="https://www.linkedin.com/in/kinan-hatahet/" target="_blank">Kinan
+                X</a><a href="https://www.linkedin.com/in/hasanshka/" target="_blank"> Hasan</a>
+        </div>
+    </div>
+
+</div>
+    
+    `
+
+  })
+
+
+
+
+
+
+
 
 }
 
