@@ -1,4 +1,4 @@
-#movie-backdrop {
+/* #movie-backdrop {
     width: 100%;
 }
 
@@ -8,8 +8,7 @@
 
 #actors {
     margin: 24px 16px 0 0;
-}
-
+} */
 
 .dropdown-menu{
     max-height: 200px;
@@ -20,12 +19,115 @@
     overflow-y: scroll;
 }
 
+#image_movie_div { /*kinan*/
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  z-index: -1;
+}
+
+body { /*kinan*/
+  background-color: black;
+}
+
+.shadow_effect { /*kinan*/
+  position: absolute;
+  z-index: -1;
+  width: 80%;
+  height: 85%;
+  background: rgb(0, 0, 0);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 1) 39%, rgba(0, 0, 0, 0.5074404761904762) 48%, rgba(0, 0, 0, 0) 72%, rgba(0, 0, 0, 0) 100%);
+}
+
+.single_movie_img { /*kinan*/
+  right: 0;
+  position: absolute;
+  height: 85%;
+  z-index: -2;
+}
+
+.short_info span, #single-actor-page span { /*kinan*/
+  font-family: 'Black Ops One';
+  font-size: 3rem;
+}
+
+.short_info { /*kinan*/
+  position: relative;
+  color: white;
+  z-index: 2;
+  width: 50%;
+}
+
+#genres { /*kinan*/
+  font-size: .8rem;
+  padding: .8rem;
+  text-align: center;
+  width: 6rem;
+  border-radius: 1rem;
+  background: rgb(147, 0, 0);
+  background: linear-gradient(90deg, rgba(147, 0, 0, 1) 39%, rgba(212, 0, 0, 1) 100%);
+}
+
+.more_info { /*kinan*/
+  display: flex;
+  font-size: 1rem;
+}
+
+.more_info p:first-child { /*kinan*/
+  padding-right: 2rem;
+}
+
+.more_info:nth-of-type(2) { /*kinan*/
+  color: rgba(212, 0, 0, 1);
+}
+
+#movie-overview { /*kinan*/
+  width: 75%;
+  font-size: .8rem;
+  color: rgb(189, 189, 189);
+}
+
+/*#second-part .card { 
+  margin-bottom: 2rem;
+}*/
+
+div.container div.card { 
+  margin-bottom: 2rem;
+}
 
 
+#actor-header, 
+#production-header,
+#second-part h3 { /*kinan*/
+  color: white;
+  padding: .7rem 0;
+}
 
+.container { /*kinan*/
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+}
 
+#trailer { /*kinan*/
+  display: flex;
+  justify-content: center;
+}
 
+img:hover { /*kinan*/
+  cursor: pointer;
+}
 
+div.container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
 
 
 @media (min-width: 544px) {  
@@ -33,16 +135,14 @@
     font-size:2rem;
   } 
 
-  
-.dropdown-menu{
+.dropdown-menu {
     max-height: 200px;
     width: 600px;
     /* margin-bottom: 10px; */
     /* text-align: center; */
     overflow-x: hidden;
     overflow-y: scroll;
-}
-
+  }
 }
  
 @media (min-width: 768px) {  
@@ -57,11 +157,113 @@
   nav {font-size:2rem;}     
 }
  
- 
 @media (min-width: 950px) and (max-width:1100px) { 
   nav {font-size:2rem;color:red;} 
 }
 
 
+@media only screen and (min-width: 768px) and (max-width: 1024px) { /*kinan*/
+  #first-part p { /*kinan*/
+    font-size: 1rem;
+  }
 
+  .shadow_effect { /*kinan*/
+    width: 80%;
+  }
 
+  .single_movie_img { /*kinan*/
+    position: relative;
+    object-fit: contain;
+    bottom: 8%;
+    width: 100%
+  }
+
+  .short_info span, #single-actor-page span { /*kinan*/
+    font-size: 4rem;
+  }
+
+  .short_info { /*kinan*/
+    margin-top: 4rem;
+    padding: 1.5rem;
+    width: 90vw;
+  }
+
+  #movie-title { /*kinan*/
+    width:6rem;
+  }
+
+  .more_info { /*kinan*/
+    flex-direction: column;
+    flex-wrap: wrap;
+    font-size: 2rem !important;
+  }
+
+  #movie-overview { /*kinan*/
+    position: relative;
+    text-align: justify;
+    width: 100%;
+  }
+
+  #second-part .card { /*kinan*/
+    margin-bottom: 2rem;
+  }
+
+  #production-company .card { /*kinan*/
+    width: 40%;
+  }
+}
+
+@media only screen and (min-width: 375px) and (max-width: 667px) { /*kinan*/
+    .shadow_effect { /*kinan*/
+    width: 60%;
+  }
+
+  .single_movie_img { /*kinan*/
+    position: relative;
+    object-fit: contain;
+    bottom: 8%;
+    width: 100%
+  }
+
+  .short_info span, #single-actor-page span { /*kinan*/
+    font-size: 2rem;
+  }
+
+  .short_info { /*kinan*/
+    margin-top: 4rem;
+    padding: 1.5rem;
+    width: 100vw;
+  }
+
+  #movie-title { /*kinan*/
+    width:6rem;
+  }
+
+  .more_info { /*kinan*/
+    flex-direction: column;
+  }
+
+  #movie-overview { /*kinan*/
+    position: relative;
+    text-align: justify;
+    width: 100%;
+  }
+
+  #second-part { /*kinan*/
+    margin: 1.5rem 1rem 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+  }
+
+  #second-part .card { /*kinan*/
+    width: 100%;
+    margin: 2rem 4rem;
+  }
+
+  #container { /*kinan*/
+    margin: 0;
+    padding: 0;
+  }
+}

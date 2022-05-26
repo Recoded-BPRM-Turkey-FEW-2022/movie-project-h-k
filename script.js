@@ -12,8 +12,10 @@ const CONTAINER = document.querySelector(".container");
 // Don't touch this function please
 const autorun = async () => {
   const movies = await fetchMovies();
+  // const actors = await fetchAllActors();
   renderMovies(movies.results);
   navBar(movies)
+  // renderAllActors(actors.cast)
 };
 
 // Don't touch this function please
@@ -41,9 +43,18 @@ const movieDetails = async (movie) => {
 
 // Newly added: For actor details
 const actorDetails = async (actorId) => {
-  const ActorRes = await fetchActor(actorId); // assigning a variable to the function that fetches actor
-  console.log(ActorRes)
-  renderActor(ActorRes); // Calling back the renderActor function
+  const actorRes = await fetchActor(actorId); // assigning a variable to the function that fetches actor
+  const movieOtherMoviesRes = await fetchOtherMovies(actorId); // assigning a variable to the function that fetches other movies for single actor
+  // console.log(actorRes);
+  // console.log(movieOtherMoviesRes);
+  renderActor(actorRes); // Calling back the renderActor function
+  renderOtherMovies(movieOtherMoviesRes); // Calling back the renderOtherMovies function
+};
+
+// Newly added: For all actors details
+const allActorsDetails = async (actors) => {
+  const allActorsRes = await fetchAllActors(actors); // assigning a variable to the function that fetches all actors
+  renderAllActors(allActorsRes); // Calling back the renderAllActors function
 };
 
 // This function is to fetch movies. You may need to add it or change some part in it in order to apply some of the features.
@@ -51,6 +62,14 @@ const fetchMovies = async () => {
   const url = constructUrl(`movie/now_playing`);
   const res = await fetch(url);
   return res.json();
+};
+
+// Newly added: This function is to fetch actors.
+const fetchAllActors = async () => {
+  const url = constructUrl(`person/popular`);
+  const res = await fetch(url);
+  const data = await res.json();
+  return data;
 };
 
 // Don't touch this function please. This function is to fetch one movie.
@@ -94,6 +113,15 @@ const fetchActor = async (actorId) => {
   return res.json();
 };
 
+// Newly added: This function to fetch other movies in single actor page
+const fetchOtherMovies = async (actorId) => {
+  const url = constructUrl(`person/${actorId}/movie_credits`);
+  const res = await fetch(url);
+  const data = await res.json();
+  // console.log(data.cast)
+  return data.cast;
+};
+
 
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovies = (movies) => {
@@ -111,17 +139,48 @@ const renderMovies = (movies) => {
   });
 };
 
+// Newly added: This function for the DOM of the actors page
+const renderAllActors = (actors) => {
+  CONTAINER.innerHTML = ""
+  actors.results.map((actor) => {
+
+    const actorDiv = document.createElement("div");
+    actorDiv.classList.add("home-page-row");
+    actorDiv.innerHTML = `
+    <div class="col">
+      <div class="card actor-card" style="width: 12rem;">
+        <img src="${BACKDROP_BASE_URL + actor.profile_path}" class="card-img-top" alt="${actor.name} poster">
+        <div class="card-body">
+          <h3 class="card-text">${actor.name}</h3>
+        </div>
+      </div>
+    </div>`;
+
+    actorDiv.addEventListener("click", () => {
+      actorDetails(actor.id);
+    });
+    CONTAINER.appendChild(actorDiv);
+  });
+};
+
+
 // Newly added: This function for the DOM of the actors section in the single movie page
 const renderActorsForSingleMovie = async (actors) => {
   const actorsDiv = document.getElementById("actors");
   for (let i = 0; i < 5; i++) {
-    const actorDiv = document.createElement("li");
+    const actorDiv = document.createElement("div");
+    actorDiv.classList.add('col');
     const actor = actors.cast[i].name;
     actorDiv.innerHTML = `
-    <h5>${actor}</h5> 
-    <img src="${
-      PROFILE_BASE_URL + actors.cast[i].profile_path
-    }" alt="${actor} poster">`;
+    <div class="col">
+      <div id="actor-${i}" class="card actor-card" style="width: 12rem;">
+        <img src="${PROFILE_BASE_URL + actors.cast[i].profile_path}" class=" actor-img card-img-top" alt="${actor} poster">
+        <div class="card-body">
+          <p class="card-text">${actor}</p>
+        </div>
+      </div>
+    </div>`;
+    
     actorDiv.addEventListener("click", () => {
       actorDetails(actors.cast[i].id);
     });
@@ -154,23 +213,37 @@ const renderTrailer = async (trailer) => {
 const renderRelatedMovies = async (relatedMovies) => {
   const relatedMoviesDiv = document.getElementById("related-movies");
   for (let i = 0; i < 5; i++) {
-    const relatedMovieDiv = document.createElement("li");
+    const relatedMovieDiv = document.createElement("div");
     const relatedMovie = relatedMovies[i].title;
     relatedMovieDiv.innerHTML = `
-    <h5>${relatedMovie}</h5> 
-    <img src="${
-      BACKDROP_BASE_URL + relatedMovies[i].poster_path
-    }" alt="${relatedMovie} poster">`;
+    <div class="col">
+      <div class="card" id="relatedMovie" style="width: 12rem;">
+        <img src="${BACKDROP_BASE_URL + relatedMovies[i].poster_path}" class="card-img-top" alt="${relatedMovie} poster">
+        <div class="card-body">
+          <p class="card-text">${relatedMovie}</p>
+        </div>
+      </div>
+    </div>
+    `;
     relatedMoviesDiv.appendChild(relatedMovieDiv);
   }
 };
 
+
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovie = (movie) => {
+  
   const company = movie.production_companies.map((company) => {
+    console.log(company.logo_path)
     // Added production companies to the single movie page
-    return `<p>${company.name}</p>
-    <img id="movie-backdrop" src=${BACKDROP_BASE_URL + company.logo_path}>`;
+    return `
+    <div class="card actor-card" style="width: 12rem; margin: 2px" >
+      <img id="movie-backdrop" class="card-img-top" src=${ company.logo_path === null ? "/images/not_found_image.jpg" : BACKDROP_BASE_URL + company.logo_path  }>
+      <div class="card-body">
+        <p class="card-text">${company.name}</p>
+      </div>
+    </div>
+    `;
   });
 
   const genres = movie.genres.map((genres) => {
@@ -183,58 +256,59 @@ const renderMovie = (movie) => {
   const language = `Language: ${movie.spoken_languages[0].english_name}`; // Added spoken language to the single movie page
 
   CONTAINER.innerHTML = `
-    <div class="row">
-        <div class="col-md-4">
-             <img id="movie-backdrop" src=${BACKDROP_BASE_URL + movie.backdrop_path
-    }>
+    <div id="first-part">
+      <div id="image_movie_div">
+        <div class="shadow_effect"></div>
+          <img id="movie-backdrop" class="single_movie_img" src=${BACKDROP_BASE_URL + movie.backdrop_path}>
         </div>
-        <div class="col-md-8">
-          <h2 id="movie-title">${movie.title}</h2>
+        <div class="short_info">
+          <h2 id="movie-title"><span>${movie.title}</span></h2>
 
           <ul id="genres" class="list-unstyled"> 
             <li>${genres.join("")}</li>
           </ul>
+          
+          <div class="more_info">
+            <p id="movie-release-date"><b>Release Date:</b> ${movie.release_date}</p>
+            <p id="movie-runtime"><b>Runtime:</b> ${movie.runtime} Minutes</p>
+          </div>
 
-          <p id="movie-release-date"><b>Release Date:</b> ${
-            movie.release_date
-          }</p>
-          <p id="movie-runtime"><b>Runtime:</b> ${movie.runtime} Minutes</p>
-          <h3>Overview:</h3>
+          <h5>Overview:</h5>
           <p id="movie-overview">${movie.overview}</p>
 
-          <div class="single-movie-info">
+          <div class="more_info">
             <p id="vote-average">${voteAverage}</p>
             <p id="vote-count">${voteCount}</p>
           </div>
 
-          <div class="single-movie-info">
+          <div class="more_info">
             <p id="director"></p>
             <p id="language">${language}</p>
           </div>
 
         </div>
 
-        <div class="list-unstyled">
-          <div class="list-unstyled">
-            <h3>Actors:</h3>
-            <ul id="actors" class="list-unstyled"></ul>
+        <div id="second-part">
+          <div class="container" id="actors">
+            <h3 id="actor-header">Actors:</h3>
+            <div id="actors" class="row"></div>
           </div>
 
-          <div class="list-unstyled">
-            <h3>Production Companies:</h3>
-            <ul id="companies" class="list-unstyled"> 
-              <li>${company.join("")}</li>
-            </ul>
+          <div class="container" id="production-company">
+            <h3 id="production-header">Production Companies:</h3>
+            <div id="companies" class="row justify-content-center"> 
+              <div>${company.join("")}</div>
+            </div>
           </div>
 
-          <div class="list-unstyled">
+          <div>
             <h3>Trailer:</h3>
-            <div id="trailer" class="list-unstyled"></div>
+            <div id="trailer"></div>
           </div>
 
-          <div class="list-unstyled">
+          <div class="container">
             <h3>Related Movies:</h3>
-            <ul id="related-movies" class="list-unstyled"></ul>
+            <div id="related-movies" class="row"></div>
           </div>
 
         </div>
@@ -254,27 +328,58 @@ const renderActor = (actor) => {
   CONTAINER.innerHTML = `
     <div class="row " id="single-actor-page">
       <div class="col-lg-4 col-md-12 col-sm-12">
-      <img id="actor-backdrop" src=${actor.backdropUrl}> 
+      <img id="actor-backdrop" src="${PROFILE_BASE_URL + actor.profile_path}" alt="${actor.name} poster">
       </div>
       <div class="col-lg-8 col-md-12 col-sm-12">
         <h2 id="actor-name"><span>${actor.name}</span></h2>
+
         <h4>Gender:</h4>
         <p id="gender">${actorGender}</p>
+
         <h4>Popularity:</h4>
         <p id="popularity">${actorPopularity}</p>
+
         <h4>Birthday:</h4>
         <p id="birthday">${actorBirthday}</p>
         ${actor.deathday !== "null" ? '' : actorDeathday }
+
         <h4>Biography:</h4>
         <p id="biography" style="color:#BDBDBD; font-size: .8rem;">${actorBiography}</p>
+
       </div>
+
       <div class="container">
-        <h4 class="row" style="padding:1rem;"> Related Movies:</h4> 
-      
+        <h3 class="row" style="padding:1rem;">Also Starring in:</h3>
+        <div id="other-movies" class="row"></div>
       </div>
+
     </div>`;
 };
 
+// Newly added: This function for the DOM of the other related movies section in the single actor page
+const renderOtherMovies = async (otherMovies) => {
+  const otherMoviesDiv = document.getElementById("other-movies");
+  for (let i = 0; i < 5; i++) {
+    const otherMovieDiv = document.createElement("div");
+    const otherMovie = otherMovies[i].title;
+    otherMovieDiv.innerHTML = `
+    <div class="col">
+      <div class="card" style="width: 12rem;">
+        <img src="${BACKDROP_BASE_URL + otherMovies[i].poster_path}" class="card-img-top" alt="${otherMovie} poster">
+        <div class="card-body">
+          <p class="card-text">${otherMovie}</p>
+        </div>
+      </div>
+    </div>
+    `;
+
+    otherMovieDiv.addEventListener("click", () => {
+      console.log(otherMovies[i].id)
+      movieDetails(otherMovies[i]);
+    });
+    otherMoviesDiv.appendChild(otherMovieDiv);
+  }
+};
 
 
 const genresArraylist = [
@@ -401,7 +506,7 @@ const navBar = (movies) => {
 
   // Filter Section 
 
-  console.log(movies.results)
+  // console.log(movies.results)
 
   // const dropMenuGenres = document.getElementById("dropdown-menu filter")
   // for (let genre of genresMovieslist) {
@@ -416,7 +521,10 @@ const navBar = (movies) => {
 
 }
 
-
+const actorsNav = document.getElementById('actors-nav');
+actorsNav.addEventListener("click",  function () { // adding  event listener to actors in navbar
+  allActorsDetails()
+});
 
 
 document.addEventListener("DOMContentLoaded", autorun);
