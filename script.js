@@ -7,6 +7,81 @@ const CONTAINER = document.querySelector(".container");
 
 
 
+//adding style to nav bar 
+
+
+
+//styling home page 
+
+
+// function carousel (){
+
+
+//   let xPos = 0;
+//   gsap.timeline()
+//     .set('.ring', { rotationY: 180, cursor: 'grab' }) //set initial rotationY so the parallax jump happens off screen
+//     .set('.img', { // apply transform rotations to each image
+//       rotateY: (i) => i * -36,
+//       transformOrigin: '50% 50% 500px',
+//       z: -500,
+//       backgroundImage: (i) => 'url(https://picsum.photos/id/' + (i + 32) + '/600/400/)',
+//       backgroundPosition: (i) => getBgPos(i),
+//       backfaceVisibility: 'hidden'
+//     })
+//     .from('.img', {
+//       duration: 1.5,
+//       y: 200,
+//       opacity: 0,
+//       stagger: 0.1,
+//       ease: 'expo'
+//     })
+//     .add(() => {
+//       $('.img').on('mouseenter', (e) => {
+//         let current = e.currentTarget;
+//         gsap.to('.img', { opacity: (i, t) => (t == current) ? 1 : 0.5, ease: 'power3' })
+//       })
+//       $('.img').on('mouseleave', (e) => {
+//         gsap.to('.img', { opacity: 1, ease: 'power2.inOut' })
+//       })
+//     }, '-=0.5')
+
+//   $(window).on('mousedown touchstart', dragStart);
+//   $(window).on('mouseup touchend', dragEnd);
+
+
+//   function dragStart(e) {
+//     if (e.touches) e.clientX = e.touches[0].clientX;
+//     xPos = Math.round(e.clientX);
+//     gsap.set('.ring', { cursor: 'grabbing' })
+//     $(window).on('mousemove touchmove', drag);
+//   }
+
+
+//   function drag(e) {
+//     if (e.touches) e.clientX = e.touches[0].clientX;
+
+//     gsap.to('.ring', {
+//       rotationY: '-=' + ((Math.round(e.clientX) - xPos) % 360),
+//       onUpdate: () => { gsap.set('.img', { backgroundPosition: (i) => getBgPos(i) }) }
+//     });
+
+//     xPos = Math.round(e.clientX);
+//   }
+
+
+//   function dragEnd(e) {
+//     $(window).off('mousemove touchmove', drag);
+//     gsap.set('.ring', { cursor: 'grab' });
+//   }
+
+
+//   function getBgPos(i) { //returns the background-position string to create parallax movement in each image
+//     return (100 - gsap.utils.wrap(0, 360, gsap.getProperty('.ring', 'rotationY') - 180 - i * 36) / 360 * 500) + 'px 0px';
+//   }
+
+
+
+// }
 
 
 // Don't touch this function please
@@ -133,13 +208,25 @@ const fetchOtherMovies = async (actorId) => {
 
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovies = (movies) => {
+  console.log(movies)
   movies.map((movie) => {
 
     const movieDiv = document.createElement("div");
+    console.log(movie)
     movieDiv.innerHTML = `
-        <img src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${movie.title
-      } poster">
-        <h3>${movie.title}</h3>`;
+    
+
+
+    <div class="card mx-3 mt-5" style="width: 17rem ;">
+    <img class="card-img-top" id="card-img-top" src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${movie.title} poster" style=" object-fit: cover;">
+     <div class="card-body text-center" id = "card-body">
+     
+       <h5 class="card-title">${movie.title}</h5>
+        <p class="card-text">${movie.vote_average}</p>
+      </div>
+    </div>
+
+`
     movieDiv.addEventListener("click", () => {
       movieDetails(movie);
     });
@@ -177,18 +264,18 @@ const renderActorsForSingleMovie = async (actors) => {
   const actorsDiv = document.getElementById("actors");
   for (let i = 0; i < 5; i++) {
     const actorDiv = document.createElement("div");
-    actorDiv.classList.add('col');
+    // actorDiv.classList.add('col');
     const actor = actors.cast[i].name;
     actorDiv.innerHTML = `
-    <div class="col">
-      <div id="actor-${i}" class="card actor-card" style="width: 12rem;">
-        <img src="${PROFILE_BASE_URL + actors.cast[i].profile_path}" class=" actor-img card-img-top" alt="${actor} poster">
-        <div class="card-body">
-          <p class="card-text">${actor}</p>
-        </div>
+    <div class="col-lg-3 col-md-4 col-xl-2 card mx-2"  id="actor-${i}" style="width: 12rem ;">
+    <img src="${PROFILE_BASE_URL + actors.cast[i].profile_path}" class=" actor-img card-img-top" alt="${actor} poster">
+     <div class="card-body text-center" id = "card-body">
+        <p class="card-text">${actor}</p>
       </div>
-    </div>`;
-    
+    </div>
+
+     `;
+
     actorDiv.addEventListener("click", () => {
       actorDetails(actors.cast[i].id);
     });
@@ -224,14 +311,12 @@ const renderRelatedMovies = async (relatedMovies) => {
     const relatedMovieDiv = document.createElement("div");
     const relatedMovie = relatedMovies[i].title;
     relatedMovieDiv.innerHTML = `
-    <div class="col">
-      <div class="card" id="relatedMovie" style="width: 12rem;">
+      <div class="col-lg-3 col-md-4 col-xl-2 card mx-2" id="relatedMovie" style="width: 12rem;">
         <img src="${BACKDROP_BASE_URL + relatedMovies[i].poster_path}" class="card-img-top" alt="${relatedMovie} poster">
-        <div class="card-body">
+        <div class="card-body text-center pt-1 " style="height: 5rem;">
           <p class="card-text">${relatedMovie}</p>
         </div>
       </div>
-    </div>
     `;
     relatedMoviesDiv.appendChild(relatedMovieDiv);
   }
@@ -240,14 +325,16 @@ const renderRelatedMovies = async (relatedMovies) => {
 
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovie = (movie) => {
-  
+
   const company = movie.production_companies.map((company) => {
     console.log(company.logo_path)
     // Added production companies to the single movie page
+
+
     return `
-    <div class="card actor-card" style="width: 12rem; margin: 2px" >
-      <img id="movie-backdrop" class="card-img-top" src=${ company.logo_path === null ? "/images/not_found_image.jpg" : BACKDROP_BASE_URL + company.logo_path  }>
-      <div class="card-body">
+    <div class="col-lg-3 col-md-4 col-xl-2 card mx-2" style="width: 12rem; margin: 2px" >
+      <img id="movie-backdrop" class="card-img-top" src=${company.logo_path === null ? "/images/not_found_image.jpg" : BACKDROP_BASE_URL + company.logo_path}>
+      <div class="card-body text-center">
         <p class="card-text">${company.name}</p>
       </div>
     </div>
@@ -264,6 +351,8 @@ const renderMovie = (movie) => {
   const language = `Language: ${movie.spoken_languages[0].english_name}`; // Added spoken language to the single movie page
 
   CONTAINER.innerHTML = `
+
+    
     <div id="first-part">
       <div id="image_movie_div">
         <div class="shadow_effect"></div>
@@ -297,26 +386,30 @@ const renderMovie = (movie) => {
         </div>
 
         <div id="second-part">
-          <div class="container" id="actors">
-            <h3 id="actor-header">Actors:</h3>
-            <div id="actors" class="row"></div>
+          <div class="row mb-5 h-100" >
+            <div class = "col-12 h-25">
+              <div class = "h3 my-3  " id="actor-header">Actors:</div>
+            </div>
+            <div class = " d-flex flex-wrap  h-75 w-100  " id="actors" ></div>
           </div>
 
-          <div class="container" id="production-company">
-            <h3 id="production-header">Production Companies:</h3>
-            <div id="companies" class="row justify-content-center"> 
-              <div>${company.join("")}</div>
+
+
+          <div class="row" id="production-company">
+            <div class = "h3 col-12 mb-3"id="production-header">Production Companies:</div>
+            <div id="companies" class= "d-flex flex-wrap  h-75 w-100 mb-3"> 
+              ${company.join("")}
             </div>
           </div>
 
-          <div>
-            <h3>Trailer:</h3>
+          <div class="row" >
+              <div class = "h3 col-12 mb-3 text-white">Trailer:</div>
             <div id="trailer"></div>
           </div>
 
-          <div class="container">
-            <h3>Related Movies:</h3>
-            <div id="related-movies" class="row"></div>
+          <div class="row">
+            <div class = "h3 col-12 mt-5 text-danger">Related Movies:</div>
+            <div id="related-movies" class="d-flex flex-wrap  h-75 w-100 mb-3"></div>
           </div>
 
         </div>
@@ -334,31 +427,30 @@ const renderActor = (actor) => {
   const actorBiography = `Deathday: ${actor.biography}`; // Added actor's biography to the actor page
 
   CONTAINER.innerHTML = `
-    <div class="row " id="single-actor-page">
-      <div class="col-lg-4 col-md-12 col-sm-12">
+    <div class="row my-5 " id="single-actor-page">
+      <div class="col-lg-4 col-md-4 col-sm-4 col-5 ">
       <img id="actor-backdrop" src="${PROFILE_BASE_URL + actor.profile_path}" alt="${actor.name} poster">
       </div>
-      <div class="col-lg-8 col-md-12 col-sm-12">
-        <h2 id="actor-name"><span>${actor.name}</span></h2>
+      <div class="col-lg-8 col-md-8 col-sm-12">
+        <div class ="h2 text-white" id="actor-name"><span>${actor.name}</span></div>
 
-        <h4>Gender:</h4>
-        <p id="gender">${actorGender}</p>
 
-        <h4>Popularity:</h4>
-        <p id="popularity">${actorPopularity}</p>
+        <div class = "h4 text-white"></div>
+        <div class = "h4 text-white" id="popularity">${actorPopularity}</div>
 
-        <h4>Birthday:</h4>
-        <p id="birthday">${actorBirthday}</p>
-        ${actor.deathday !== "null" ? '' : actorDeathday }
+        
+        <div class="h4 text-white" id="birthday">${actorBirthday}</div>
+        ${actor.deathday !== "null" ? '' : actorDeathday}
 
-        <h4>Biography:</h4>
+        <div class="h4  text-white">Biography</div>
         <p id="biography" style="color:#BDBDBD; font-size: .8rem;">${actorBiography}</p>
-
       </div>
 
-      <div class="container">
-        <h3 class="row" style="padding:1rem;">Also Starring in:</h3>
-        <div id="other-movies" class="row"></div>
+      <div class="row  h-100">
+        <div class = "h3 col-12 my-5 text-danger">Also starring in :</div>
+        <div id="other-movies" class="d-flex flex-wrap  h-75 w-100  ">
+          
+        </div>
       </div>
 
     </div>`;
@@ -371,14 +463,14 @@ const renderOtherMovies = async (otherMovies) => {
     const otherMovieDiv = document.createElement("div");
     const otherMovie = otherMovies[i].title;
     otherMovieDiv.innerHTML = `
-    <div class="col">
-      <div class="card" style="width: 12rem;">
+
+      <div class="card col-lg-3 col-md-4 col-xl-2 card mx-2" style="width: 9rem;">
         <img src="${BACKDROP_BASE_URL + otherMovies[i].poster_path}" class="card-img-top" alt="${otherMovie} poster">
         <div class="card-body">
           <p class="card-text">${otherMovie}</p>
         </div>
       </div>
-    </div>
+  
     `;
 
     otherMovieDiv.addEventListener("click", () => {
@@ -388,6 +480,27 @@ const renderOtherMovies = async (otherMovies) => {
     otherMoviesDiv.appendChild(otherMovieDiv);
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 const genresArraylist = [
@@ -471,7 +584,16 @@ const genresArraylist = [
 
 
 
-//Hasan: code for the nav bar 
+
+
+
+
+
+
+
+
+
+
 
 const navBar = (movies, upComingMovies) => {
 
@@ -603,7 +725,7 @@ const navBar = (movies, upComingMovies) => {
     <div class="col-12">
         <img src="https://i.ytimg.com/vi/iAYmjA9LHIc/maxresdefault.jpg" alt="">
     </div>
-    <div class="col-5 text-center mt-5">
+    <div class="col-5 text-white text-center mt-5">
         We are Pirate Developers. Looking for expanding towards Higher Amplitude and Dimnsion
         We present our Fine Creations with Humble and Attitude to surpass the living Creatures beyond its
         limits
@@ -632,7 +754,7 @@ const navBar = (movies, upComingMovies) => {
 }
 
 const actorsNav = document.getElementById('actors-nav');
-actorsNav.addEventListener("click",  function () { // adding  event listener to actors in navbar
+actorsNav.addEventListener("click", function () { // adding  event listener to actors in navbar
   allActorsDetails()
 });
 

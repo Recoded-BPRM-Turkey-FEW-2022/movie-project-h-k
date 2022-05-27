@@ -10,6 +10,111 @@
     margin: 24px 16px 0 0;
 } */
 
+
+
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400&display=swap");
+ @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,500&display=swap");
+
+
+
+ /* style to the hover over cards  */
+ 
+
+ .card {
+	 position: relative;
+	 display: flex;
+	 justify-content: center;
+	 align-items: center;
+	 /* width: 200px;
+	 height: 50px; */
+	 background: #fff;
+	 /* border-radius: 999px;s */
+}
+ .card:hover {
+	 animation: burn 1000ms ease-out forwards;
+}
+ .card:hover::before {
+	 content: '';
+	 position: absolute;
+	 left: 40px;
+	 /* width: 100px;
+	 height: 40px; */
+	 background: rgba(255, 230, 110, 1);
+	 /* border-radius: 100%; */
+	 animation: flare 1000ms ease-out forwards;
+}
+ .card a:hover::after {
+	 content: '';
+	 position: absolute;
+	 right: 40px;
+	 /* width: 100px;
+	 height: 40px; */
+	 background: rgba(255, 230, 110, 1);
+	 /* border-radius: 100%; */
+	 animation: flare 1000ms ease-out forwards;
+}
+ @keyframes flare {
+	 100% {
+		 transform: translateY(-20px) scale(1.5);
+		 filter: blur(10px);
+		 opacity: 0;
+	}
+}
+ @keyframes burn {
+	 0% {
+		 color: rgba(255, 130, 110, 1);
+		 background: rgba(255, 230, 110, 1);
+		 box-shadow: 0 0 5px 0 rgba(200, 0, 10, 1), 0 0 5px 0 rgba(230, 30, 10, 0.8), 0 0 5px 0 rgba(230, 230, 10, 0.6);
+	}
+	 100% {
+		 color: rgba(0, 0, 0, 1);
+		 background: rgba(255, 255, 255, 1);
+		 box-shadow: 0 -35px 40px 30px rgba(255, 130, 10, 0), 0 -30px 30px 10px rgba(230, 30, 10, 0), 0 -20px 10px 0 rgba(255, 255, 10, 0);
+	}
+}
+ 
+.card:hover{
+    box-shadow: 8px 8px 8px wheat;
+    transform:scale(1.1);
+}
+
+.card{
+  /* height:200px;
+  width:200px; */
+  border:1px solid black;
+  transition:.3s;
+  margin: 3rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#card-img-top {
+    width: 100%;
+    height: 40vh;
+    object-fit: cover;
+}
+
+
+#card-body{
+  height: 10vh;
+}
+
 .dropdown-menu{
     max-height: 200px;
     width: 200px;
@@ -19,7 +124,7 @@
     overflow-y: scroll;
 }
 
-#image_movie_div { /*kinan*/
+#image_movie_div { 
   width: 100%;
   position: absolute;
   top: 0px;
@@ -29,11 +134,11 @@
   z-index: -1;
 }
 
-body { /*kinan*/
+body { 
   background-color: black;
 }
 
-.shadow_effect { /*kinan*/
+.shadow_effect { 
   position: absolute;
   z-index: -1;
   width: 80%;
@@ -42,26 +147,26 @@ body { /*kinan*/
   background: linear-gradient(90deg, rgba(0, 0, 0, 1) 39%, rgba(0, 0, 0, 0.5074404761904762) 48%, rgba(0, 0, 0, 0) 72%, rgba(0, 0, 0, 0) 100%);
 }
 
-.single_movie_img { /*kinan*/
+.single_movie_img { 
   right: 0;
   position: absolute;
   height: 85%;
   z-index: -2;
 }
 
-.short_info span, #single-actor-page span { /*kinan*/
+.short_info span, #single-actor-page span { 
   font-family: 'Black Ops One';
   font-size: 3rem;
 }
 
-.short_info { /*kinan*/
+.short_info { 
   position: relative;
   color: white;
   z-index: 2;
   width: 50%;
 }
 
-#genres { /*kinan*/
+#genres { 
   font-size: .8rem;
   padding: .8rem;
   text-align: center;
@@ -71,28 +176,26 @@ body { /*kinan*/
   background: linear-gradient(90deg, rgba(147, 0, 0, 1) 39%, rgba(212, 0, 0, 1) 100%);
 }
 
-.more_info { /*kinan*/
+.more_info { 
   display: flex;
   font-size: 1rem;
 }
 
-.more_info p:first-child { /*kinan*/
+.more_info p:first-child { 
   padding-right: 2rem;
 }
 
-.more_info:nth-of-type(2) { /*kinan*/
+.more_info:nth-of-type(2) { 
   color: rgba(212, 0, 0, 1);
 }
 
-#movie-overview { /*kinan*/
+#movie-overview { 
   width: 75%;
   font-size: .8rem;
   color: rgb(189, 189, 189);
 }
 
-/*#second-part .card { 
-  margin-bottom: 2rem;
-}*/
+
 
 div.container div.card { 
   margin-bottom: 2rem;
@@ -101,24 +204,19 @@ div.container div.card {
 
 #actor-header, 
 #production-header,
-#second-part h3 { /*kinan*/
+#second-part h3 { 
   color: white;
-  padding: .7rem 0;
+  /* padding: .7rem 0; */
 }
 
-.container { /*kinan*/
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  flex-direction: column;
-}
 
-#trailer { /*kinan*/
+
+#trailer { 
   display: flex;
   justify-content: center;
 }
 
-img:hover { /*kinan*/
+img:hover { 
   cursor: pointer;
 }
 
@@ -130,10 +228,6 @@ div.container {
 }
 
 
-@media (min-width: 544px) {  
-  nav {
-    font-size:2rem;
-  } 
 
 .dropdown-menu {
     max-height: 200px;
@@ -143,113 +237,129 @@ div.container {
     overflow-x: hidden;
     overflow-y: scroll;
   }
-}
+
  
-@media (min-width: 768px) {  
-  nav {font-size:2rem;} 
+
+@media (min-width: 544px) {  
+  nav {
+    font-size:1.2rem;
+  } 
+
 }
- 
-@media (min-width: 992px) { 
-  nav {font-size:2rem;} 
+
+
+@media (min-width: 768px ) and (max-width: 950px){  
+  nav {
+    font-size:0.9rem;
+  } 
+
 }
- 
-@media (min-width: 1200px) {  
-  nav {font-size:2rem;}     
-}
+
+
+
  
 @media (min-width: 950px) and (max-width:1100px) { 
-  nav {font-size:2rem;color:red;} 
+  nav {font-size:1.2rem;} 
+}
+ 
+ 
+@media (min-width: 1200px) {  
+  nav {font-size:1.3rem;}     
 }
 
 
-@media only screen and (min-width: 768px) and (max-width: 1024px) { /*kinan*/
-  #first-part p { /*kinan*/
+
+
+
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) { 
+  #first-part p { 
     font-size: 1rem;
   }
 
-  .shadow_effect { /*kinan*/
+  .shadow_effect { 
     width: 80%;
   }
 
-  .single_movie_img { /*kinan*/
+  .single_movie_img { 
     position: relative;
     object-fit: contain;
     bottom: 8%;
     width: 100%
   }
 
-  .short_info span, #single-actor-page span { /*kinan*/
+  .short_info span, #single-actor-page span { 
     font-size: 4rem;
   }
 
-  .short_info { /*kinan*/
+  .short_info { 
     margin-top: 4rem;
     padding: 1.5rem;
     width: 90vw;
   }
 
-  #movie-title { /*kinan*/
+  #movie-title { 
     width:6rem;
   }
 
-  .more_info { /*kinan*/
+  .more_info { 
     flex-direction: column;
     flex-wrap: wrap;
     font-size: 2rem !important;
   }
 
-  #movie-overview { /*kinan*/
+  #movie-overview { 
     position: relative;
     text-align: justify;
     width: 100%;
   }
 
-  #second-part .card { /*kinan*/
+  #second-part .card { 
     margin-bottom: 2rem;
   }
 
-  #production-company .card { /*kinan*/
+  #production-company .card { 
     width: 40%;
   }
 }
 
-@media only screen and (min-width: 375px) and (max-width: 667px) { /*kinan*/
-    .shadow_effect { /*kinan*/
+@media only screen and (min-width: 375px) and (max-width: 667px) { 
+    .shadow_effect { 
     width: 60%;
   }
 
-  .single_movie_img { /*kinan*/
+  .single_movie_img { 
     position: relative;
     object-fit: contain;
     bottom: 8%;
     width: 100%
   }
 
-  .short_info span, #single-actor-page span { /*kinan*/
+  .short_info span, #single-actor-page span { 
     font-size: 2rem;
   }
 
-  .short_info { /*kinan*/
+  .short_info { 
     margin-top: 4rem;
     padding: 1.5rem;
     width: 100vw;
   }
 
-  #movie-title { /*kinan*/
+  #movie-title { 
     width:6rem;
   }
 
-  .more_info { /*kinan*/
+  .more_info { 
     flex-direction: column;
   }
 
-  #movie-overview { /*kinan*/
+  #movie-overview { 
     position: relative;
     text-align: justify;
     width: 100%;
   }
 
-  #second-part { /*kinan*/
+  #second-part { 
     margin: 1.5rem 1rem 1rem 1rem;
     display: flex;
     flex-direction: column;
@@ -257,13 +367,14 @@ div.container {
     align-content: center;
   }
 
-  #second-part .card { /*kinan*/
+  #second-part .card { 
     width: 100%;
     margin: 2rem 4rem;
   }
 
-  #container { /*kinan*/
+  #container { 
     margin: 0;
     padding: 0;
   }
 }
+
