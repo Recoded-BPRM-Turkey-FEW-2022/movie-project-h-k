@@ -14,80 +14,121 @@ const CONTAINER = document.querySelector(".container");
 //styling home page 
 
 
-// function carousel (){
+function carousel(movies) {
+
+  let xPos = 0;
+  gsap.timeline()
+    .set('.ring', { rotationY: 180, cursor: 'grab' }) //set initial rotationY so the parallax jump happens off screen
+    .set('.img', { // apply transform rotations to each image
+      rotateY: (i) => i * -36,
+      transformOrigin: '50% 50% 500px',
+      z: -500,
+      // backgroundImage: (i) => 'url(https://picsum.photos/id/' + (i + 32) + '/600/400/)',
+      backgroundPosition: (i) => getBgPos(i),
+      backfaceVisibility: 'hidden'
+    })
+    .from('.img', {
+      duration: 1.5,
+      y: 200,
+      opacity: 0,
+      stagger: 0.1,
+      ease: 'expo'
+    })
+    .add(() => {
+      $('.img').on('mouseenter', (e) => {
+        let current = e.currentTarget;
+        gsap.to('.img', { opacity: (i, t) => (t == current) ? 1 : 0.5, ease: 'power3' })
+      })
+      $('.img').on('mouseleave', (e) => {
+        gsap.to('.img', { opacity: 1, ease: 'power2.inOut' })
+      })
+    }, '-=0.5')
+
+  $(window).on('mousedown touchstart', dragStart);
+  $(window).on('mouseup touchend', dragEnd);
 
 
-//   let xPos = 0;
-//   gsap.timeline()
-//     .set('.ring', { rotationY: 180, cursor: 'grab' }) //set initial rotationY so the parallax jump happens off screen
-//     .set('.img', { // apply transform rotations to each image
-//       rotateY: (i) => i * -36,
-//       transformOrigin: '50% 50% 500px',
-//       z: -500,
-//       backgroundImage: (i) => 'url(https://picsum.photos/id/' + (i + 32) + '/600/400/)',
-//       backgroundPosition: (i) => getBgPos(i),
-//       backfaceVisibility: 'hidden'
-//     })
-//     .from('.img', {
-//       duration: 1.5,
-//       y: 200,
-//       opacity: 0,
-//       stagger: 0.1,
-//       ease: 'expo'
-//     })
-//     .add(() => {
-//       $('.img').on('mouseenter', (e) => {
-//         let current = e.currentTarget;
-//         gsap.to('.img', { opacity: (i, t) => (t == current) ? 1 : 0.5, ease: 'power3' })
-//       })
-//       $('.img').on('mouseleave', (e) => {
-//         gsap.to('.img', { opacity: 1, ease: 'power2.inOut' })
-//       })
-//     }, '-=0.5')
-
-//   $(window).on('mousedown touchstart', dragStart);
-//   $(window).on('mouseup touchend', dragEnd);
+  function dragStart(e) {
+    if (e.touches) e.clientX = e.touches[0].clientX;
+    xPos = Math.round(e.clientX);
+    gsap.set('.ring', { cursor: 'grabbing' })
+    $(window).on('mousemove touchmove', drag);
+  }
 
 
-//   function dragStart(e) {
-//     if (e.touches) e.clientX = e.touches[0].clientX;
-//     xPos = Math.round(e.clientX);
-//     gsap.set('.ring', { cursor: 'grabbing' })
-//     $(window).on('mousemove touchmove', drag);
-//   }
+  function drag(e) {
+    if (e.touches) e.clientX = e.touches[0].clientX;
+
+    gsap.to('.ring', {
+      rotationY: '-=' + ((Math.round(e.clientX) - xPos) % 360),
+      onUpdate: () => { gsap.set('.img', { backgroundPosition: (i) => getBgPos(i) }) }
+    });
+
+    xPos = Math.round(e.clientX);
+  }
 
 
-//   function drag(e) {
-//     if (e.touches) e.clientX = e.touches[0].clientX;
-
-//     gsap.to('.ring', {
-//       rotationY: '-=' + ((Math.round(e.clientX) - xPos) % 360),
-//       onUpdate: () => { gsap.set('.img', { backgroundPosition: (i) => getBgPos(i) }) }
-//     });
-
-//     xPos = Math.round(e.clientX);
-//   }
+  function dragEnd(e) {
+    $(window).off('mousemove touchmove', drag);
+    gsap.set('.ring', { cursor: 'grab' });
+  }
 
 
-//   function dragEnd(e) {
-//     $(window).off('mousemove touchmove', drag);
-//     gsap.set('.ring', { cursor: 'grab' });
-//   }
+  function getBgPos(i) { //returns the background-position string to create parallax movement in each image
+    return (100 - gsap.utils.wrap(0, 360, gsap.getProperty('.ring', 'rotationY') - 180 - i * 36) / 360 * 500) + 'px 0px';
+  }
 
 
-//   function getBgPos(i) { //returns the background-position string to create parallax movement in each image
-//     return (100 - gsap.utils.wrap(0, 360, gsap.getProperty('.ring', 'rotationY') - 180 - i * 36) / 360 * 500) + 'px 0px';
-//   }
+}
 
 
 
-// }
+const renderCarousal = (movies) => {
+
+  console.log(movies)
+  movies.map((movie) => {
+
+    const movieDiv = document.createElement("div");
+    console.log(movie)
+
+    movieDiv.innerHTML = `
+
+
+    <div class="circle">
+      <div class="ring">
+        <img src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="" srcset="" class="img">
+        </>
+      </div>
+    </div>
+
+
+`
+    movieDiv.addEventListener("click", () => {
+      movieDetails(movie);
+    });
+    document.getElementById("stage").appendChild(movieDiv);
+  });
+};
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // Don't touch this function please
 const autorun = async () => {
   const movies = await fetchMovies();
   const upComingMovies = await fetchUpcomingMovies();
+  renderCarousal(movies.results)
+  carousel();
   renderMovies(movies.results);
   navBar(movies, upComingMovies)
 };
@@ -234,6 +275,12 @@ const renderMovies = (movies) => {
   });
 };
 
+
+
+
+
+
+
 // Newly added: This function for the DOM of the actors page
 const renderAllActors = (actors) => {
   CONTAINER.innerHTML = ""
@@ -326,6 +373,8 @@ const renderRelatedMovies = async (relatedMovies) => {
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovie = (movie) => {
 
+
+  document.getElementById("stage").innerHTML = "";
   const company = movie.production_companies.map((company) => {
     console.log(company.logo_path)
     // Added production companies to the single movie page
@@ -419,6 +468,8 @@ const renderMovie = (movie) => {
 
 // Newly added: For the single actor page
 const renderActor = (actor) => {
+
+  document.getElementById("stage").innerHTML = "";
 
   const actorGender = `Gender: ${actor.gender}`; // Added actor's gender to the actor page
   const actorPopularity = `Popularity: ${actor.popularity}`; // Added actor's popularity to the actor page
@@ -719,6 +770,7 @@ const navBar = (movies, upComingMovies) => {
   aboutUs.addEventListener("click", () => {
 
     document.getElementById("container").innerHTML = "";
+    document.getElementById("stage").innerHTML = "";
     CONTAINER.innerHTML =
       `
     <div class="row d-flex flex-column align-items-center justify-content-center">
